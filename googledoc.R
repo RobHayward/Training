@@ -59,5 +59,18 @@ da <- read.csv(textConnection(getURL(link)))
 head(medals)
 da
 ?read.table
-
-	
+------------------
+# This works.
+require(RCurl)
+myCsv <- getURL("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
+da <- read.csv(textConnection(myCsv), stringsAsFactors = FALSE)
+da[,1] <- as.Date(da[,1], format = "%d/%m/%Y")
+da[,DT] <- c
+da[,2] <- as.POSIXct(da[,2], format = "%H:%M:%S") 
+da$DT <- cbind(da[,1], da[,2])
+da$DT <- as.POSIXct(da$DT)
+head(da$DT)
+str(da)
+da2 <- subset(da, subset = da[,3] == "1")
+plot(da2[,10] ~ da2[,1], type = 'l')
+head(da2[,10])
