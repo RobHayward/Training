@@ -4,6 +4,8 @@ The time series of the different programmes
 
 ```{r, echo = FALSE, message=FALSE, fig.width=10}
 require(RCurl)
+options(RCurlOptions = list(capath = system.file("CurlSSL",                                              
+    "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
 myCsv <- getURL("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
 da <- read.csv(textConnection(myCsv), stringsAsFactors = FALSE)
 # Combine the date and time to one column 
@@ -16,4 +18,28 @@ for(i in 1:6)
 plot(da2$km.min ~ da2$DT, type = 'l', main = paste(c("Times for Level ",
               i)), xlab = "Time", ylab = "KM-Min")
 }
+```
+
+Now some alternatives that can be changed.  These include km-min with route one and route six without any notes, km-min for all routes with notes as well as the km-min for route one and km-min route six for the last 20 sessions.  The final is 6A.  
+
+```{r, echo=FALSE, message=FALSE, fig.width=10}
+par(mfrow = c(2, 3))
+da3 <- subset(da, subset = da[, 3] == 1 & da[,13] =="")
+# head(da3)
+plot(da3$km.min ~ da3$DT, type = 'l', main = "Route 1")
+da3 <- subset(da, subset = da[, 3] == 6 & da[,13] =="")
+# head(da3)
+plot(da3$km.min ~ da3$DT, type = 'l', main = "Route 6")
+da3 <- subset(da, subset = da[,13] !="")
+# head(da3)
+plot(da3$km.min ~ da3$DT, type = 'l', main = "All notes")
+da3 <- subset(da, subset = da[1:15 ,3] == 1)
+# head(da3)
+plot(da3$km.min ~ da3$DT, type = 'l', main = "Recent 1")
+da3 <- subset(da, subset = da[1:15 ,3] == 6)
+# head(da3)
+plot(da3$km.min ~ da3$DT, type = 'l', main = "Recent 6")
+da3 <- subset(da, subset = da[,3] == "6A")
+#da3
+plot(da3$km.min ~ da3$DT, type = 'l', main = "Route 6A")
 ```
