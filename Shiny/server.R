@@ -10,8 +10,8 @@ shinyServer(function(input, output){
     
       range <- switch(input$Range, 
                       "All data" = 1:length, 
-                      "Last year" = 1:100,
-                      "Last month" = 1:20)
+                      "Last 100" = 1:100,
+                      "Last 20" = 1:20)
       
       metric <- switch(input$Metric, 
                       "Cal/KM" = "Calories.KM", 

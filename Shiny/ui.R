@@ -10,7 +10,7 @@ shinyUI(fluidPage(
             selected = "1A"),
   
   selectInput("Range", "Select dates:", 
-              choices = c("All data", "Last year", "Last month"),
+              choices = c("All data", "Last 100", "Last 20"),
               selected = "All data"),
               
   selectInput("Metric", "Select metric:", 
