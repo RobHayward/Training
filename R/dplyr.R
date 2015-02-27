@@ -46,14 +46,14 @@ mutate(da, as.POSIXlt(da$DT)$mon)%>%
   summarise(sum(Distance..KM.))
 #----Actions----------
 mutate(da, month = as.POSIXlt(da$DT)$mon)%>%
-  filter(month == 11)%>%
+  filter(month == 1)%>%
   select(km.min, DT, Prog)%>%
   head(5)
   
 
 #---More actions
 mutate(da, month = as.POSIXlt(da$DT)$mon)%>%
-  filter(month == 0)%>%
+  filter(month == 1)%>%
   select(km.min, DT, Prog)%>%
   arrange(desc(km.min))%>%
   head(5)
