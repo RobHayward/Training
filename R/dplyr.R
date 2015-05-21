@@ -102,3 +102,4 @@ fit2 <- lm(da2$km.min ~ da2$miss + as.factor(da2$Prog))
 summary(fit2)
 head(da2)
 require(plm)
+
