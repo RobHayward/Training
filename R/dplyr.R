@@ -1,21 +1,24 @@
-#Some tests with dplyr
-#Roger Penn on dplyr
-#https://www.youtube.com/watch?v=aywFompr1F4&list=TLmZovpghOuEo
-
-
-library(RCurl)
+# This coems from the google sheets package
+# Information at http://htmlpreview.github.io/?https://raw.githubusercontent.com/jennybc/googlesheets/
+# master/vignettes/basic-usage.html
+library(googlesheets)
 library(dplyr)
-library(lubridate)
-options(RCurlOptions = list(capath = system.file("CurlSSL",                                              
-                      "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
-myCsv <- getURL("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
-da <- read.csv(textConnection(myCsv), stringsAsFactors = FALSE)
-# Combine the date and time to one column 
+# register the sheet that has been made public
+Training <- gs_title("Training")
+# Now training contains the information about access
+da <- gs_read_csv(Training)
+# Information in in da
+head(da[,2])
+str(da)
+# at the moment, the as.POSIXct does not work.  Not sure why.  Not factors. 
 da$DT <- as.POSIXct(paste(da[,1], da[,2]), format = "%d/%m/%Y%H:%M:%S")
+head(da$DT)
+head(da$test)
 #da[,1] <- as.POSIXct(da[,1], format = "%d/%m/%Y")
 #da[,1] <- as.POSIXct(da[,2], format = "%H:%M:%S") 
 str(da)
 head(da)
+tail(da)
 # Get fastest for Prog 1===== 
 filter(da, Prog == 1)%>% 
 arrange(desc(km.min))%>%
@@ -103,3 +106,13 @@ summary(fit2)
 head(da2)
 require(plm)
 
+#---------------
+url <- "https://docs.google.com/spreadsheets/d/0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc/export?format=csv&id=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc"
+con <- url("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
+library(mosaic)
+myDat <- fetchGoogle("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
+
+da <- gs_read_listfeed(gap, ws = "Training")
+gs_ls("Training")
+gs_ls
+library("googlesheets")
