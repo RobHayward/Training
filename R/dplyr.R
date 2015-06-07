@@ -9,13 +9,17 @@ Training <- gs_title("Training")
 da <- gs_read_csv(Training)
 # Information in in da
 head(da[,2])
+tail(da[,2])
+class(da[,2])
 str(da)
+da
+# converto data.frame so that as.POSIXct will work. 
+da <- as.data.frame(da)
 # at the moment, the as.POSIXct does not work.  Not sure why.  Not factors. 
-da$DT <- as.POSIXct(paste(da[,1], da[,2]), format = "%d/%m/%Y%H:%M:%S")
+da$DT <- as.POSIXct(strptime(paste(da[,1], da[,2]), format = "%d/%m/%Y%H:%M:%S"))
 head(da$DT)
-head(da$test)
-#da[,1] <- as.POSIXct(da[,1], format = "%d/%m/%Y")
-#da[,1] <- as.POSIXct(da[,2], format = "%H:%M:%S") 
+#da[,1] <- as.POSIXct(da[,2], format = "%d/%m/%Y")
+#da[,1] <- as.POSIXct(da[,3], format = "%H:%M:%S") 
 str(da)
 head(da)
 tail(da)
@@ -32,7 +36,7 @@ da$hour <- as.integer(as.POSIXlt(da$DT)$hour)
   head(5)
 # Look at average speed per program--------------------
 group_by(da, Prog)%>%
-  summarise(mean(km.min))
+  summarise(mean(km.min)) 
 group_by(da, Prog)%>%
   summarise(mean(Calories))
 #----average speed per day
@@ -67,7 +71,6 @@ da%>%
   select(Prog, km.min, DT)%>%
   group_by(Prog)%>%
   summarise_each(funs(min(., na.rm = TRUE), max(.,na.rm = TRUE)))
-# Not sure why the dates are not right here.     
 
 #---calculate the days between workouts
 da$day <- as.POSIXlt(da$DT)$yday
@@ -107,12 +110,3 @@ head(da2)
 require(plm)
 
 #---------------
-url <- "https://docs.google.com/spreadsheets/d/0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc/export?format=csv&id=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc"
-con <- url("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
-library(mosaic)
-myDat <- fetchGoogle("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
-
-da <- gs_read_listfeed(gap, ws = "Training")
-gs_ls("Training")
-gs_ls
-library("googlesheets")

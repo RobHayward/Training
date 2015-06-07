@@ -10,3 +10,14 @@ da <- gs_read_csv(Training)
 head(da)
 str(da)
 # The data and time can now be parsed as they were in the previous versions. 
+gs_ls()
+date <- "06/06/2015"
+time <- "11:00:00"
+dt <- as.POSIXct(paste(date, time), format = "%d/%m/%Y%H:%M:%S", 
+                 tz ="GMT")
+dt
+a <- paste(date, time, sep = "")
+a
+as.POSIXct(a, format = "%d/%m/%Y%H:%M:%S")
+# this works but dplyr.R does not???????
+class(date)
