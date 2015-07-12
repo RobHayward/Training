@@ -1,11 +1,18 @@
 library(shiny)
-library(RCurl)
-options(RCurlOptions = list(capath = system.file("CurlSSL",                                              
-                                                 "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
-myCsv <- getURL("https://docs.google.com/spreadsheet/pub?key=0AjqT5C2L9dEldG0yME8zN0JoNVF2V1d2YnBoTmlVZXc&single=true&gid=1&output=csv")
-da <- read.csv(textConnection(myCsv), stringsAsFactors = FALSE)
-# Combine the date and time to one column 
-da$DT <- as.POSIXct(paste(da[,1], da[,2]), format = "%d/%m/%Y%H:%M:%S")
+# This coems from the google sheets package
+# Information at http://htmlpreview.github.io/?https://raw.githubusercontent.com/jennybc/googlesheets/
+# master/vignettes/basic-usage.html
+library(googlesheets)
+library(dplyr)
+# register the sheet that has been made public
+Training <- gs_title("Training")
+# Now training contains the information about access
+da <- gs_read_csv(Training)
+# Information in in da
+# converto data.frame so that as.POSIXct will work. 
+da <- as.data.frame(da)
+# at the moment, the as.POSIXct does not work.  Not sure why.  Not factors. 
+da$DT <- as.POSIXct(strptime(paste(da[,1], da[,2]), format = "%d/%m/%Y%H:%M:%S"))
 da[,1] <- as.POSIXct(da[,1], format = "%d/%m/%Y")
 da[,1] <- as.POSIXct(da[,2], format = "%H:%M:%S") 
 
