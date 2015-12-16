@@ -46,7 +46,7 @@ summarise(mean(km.min))
 #~----aveage speed per month
 mutate(da, as.POSIXlt(da$DT)$mon)%>%
   group_by(as.POSIXlt(da$DT)$mon)%>%
-  summarise(mean(km.min), sd(km.min))
+  summarise(round(mean(km.min), 4), round(sd(km.min), 4))
 #------total distance per month
 mutate(da, as.POSIXlt(da$DT)$mon)%>%
   group_by(as.POSIXlt(da$DT)$mon)%>%
@@ -110,3 +110,4 @@ head(da2)
 require(plm)
 
 #---------------
+
